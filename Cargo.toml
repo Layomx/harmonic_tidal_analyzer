@@ -2,5 +2,30 @@
 name = "analisis_de_mareas"
 version = "0.1.0"
 edition = "2024"
+rust-version = "1.85"
+authors = ["Elvis Adames elvisadames03@gmail.com"]
+description = "Harmonic tidal analyzer made in Rust. Research prototype from Panama for the Pacific and Caribbean Sea."
+license = "MIT"
+repository = "https://github.com/Layomx/harmonic_tidal_analyzer"
+keywords = ["tides", "harmonic-analysis", "oceanography", "panama"]
+categories = ["science", "mathematics"]
+
+[lib]
+name = "tides"
+path = "src/lib.rs"
+
+[[bin]]
+name = "tides"
+path = "src/bin/tides.rs"
 
 [dependencies]
+nalgebra = "0.32"
+chrono = { version = "0.4", default-features = false, features = ["std"] }
+clap = { version = "4", features = ["derive"] }
+csv = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "1"
+
+[dev-dependencies]
+criterion = { version = "0.5", default-features = false }
