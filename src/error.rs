@@ -11,12 +11,12 @@ pub enum Error {
     NotEnoughData(String),
     #[error("Unknown constituent: {0}")]
     UnknownConstituent(String),
-    #[error("Invalida input: {0}")]
+    #[error("Invalid input: {0}")]
     InvalidInput(String),
     #[error("Input/Output error: {0}")]
     Io(#[from] std::io::Error),
     #[error("CSV error: {0}")]
     Csv(#[from] csv::Error),
-    #[error("JSON error: {0}:")]
+    #[error("JSON error: {0}")]
     Json(#[from] serde_json::Error),
 }
