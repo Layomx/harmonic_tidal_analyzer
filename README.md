@@ -55,19 +55,6 @@ let arguments = astro_args(0.0);
 println!("{:?}", arguments.doodson);
 ```
 
-## Project layout
-
-```text
-src/
-├── astro.rs       # Astronomical arguments and time
-├── bin/tides.rs   # Only executable
-├── error.rs       # Public crate errors
-└── lib.rs         # Library API
-```
-
-`src/main.rs` is kept as a reference for the initial prototype, but
-`autobins = false` prevents Cargo from registering it as a second executable.
-
 ## License
 
 MIT
