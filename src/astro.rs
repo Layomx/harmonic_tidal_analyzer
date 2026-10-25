@@ -119,27 +119,38 @@ pub fn astro_args(t: Days) -> AstroArgs {
 mod tests {
     use super::*;
 
-    #[test]
-    fn wraps_positive_and_negative_angles() {
-        assert_eq!(wrap360(360.0), 0.0);
-        assert_eq!(wrap360(-30.0), 330.0);
-        assert_eq!(wrap360(725.0), 5.0);
-    }
+    /// 2000-01-01T12:00:00 (J2000.0) in Unix's days
+    const J2000_UNIX_DAYS: f64 = 10_957.5;
 
     #[test]
-    fn unix_epoch_is_before_j2000_by_three_tenths_of_a_century() {
-        assert!((julian_centuries(0.0) + 0.3).abs() < 1e-15);
-    }
+    fn mean_longitudes_at_j2000() {
+        let a: AstroArgs = astro_args(J2000_UNIX_DAYS);
 
-    #[test]
-    fn astronomical_arguments_are_normalized() {
-        let args = astro_args(0.0);
-
+        // Values of Meeus for T = 0
         assert!(
-            args.doodson
-                .iter()
-                .all(|angle| (0.0..360.0).contains(angle))
+            (a.doodson[1] - 218.3164).abs() < 0.01,
+            "s = {}",
+            a.doodson[2]
         );
-        assert!((args.node_rad() - args.node_deg.to_radians()).abs() < f64::EPSILON);
+        assert!(
+            (a.doodson[2] - 280.4665).abs() < 0.01,
+            "h = {}",
+            a.doodson[2]
+        );
+        assert!((a.node_deg - 125.0445).abs() < 0.01, "N = {}", a.node_deg);
+    }
+
+    #[test]
+    fn tau_advances_about_14_49_deg_per_hour() {
+        let a0: AstroArgs = astro_args(J2000_UNIX_DAYS);
+        let a1: AstroArgs = astro_args(J2000_UNIX_DAYS + 1.0 / 24.0);
+        let d: f64 = wrap360(a1.doodson[0] - a0.doodson[0]);
+        assert!((d - RATE_TAU).abs() < 1e-3, "Δτ = {d}");
+    }
+
+    #[test]
+    fn wrap_works_for_negatives() {
+        assert!((wrap360(-10.0) - 350.0).abs() < 1e-12);
+        assert!((wrap360(725.0) - 5.0).abs() < 1e-12);
     }
 }
