@@ -9,11 +9,13 @@ license = "MIT"
 repository = "https://github.com/Layomx/harmonic_tidal_analyzer"
 keywords = ["tides", "harmonic-analysis", "oceanography", "panama"]
 categories = ["science", "mathematics"]
+autobins = false
 
 [lib]
 name = "tides"
 path = "src/lib.rs"
 
+# The only executable is src/bin/tides.rs.
 [[bin]]
 name = "tides"
 path = "src/bin/tides.rs"
